@@ -18,9 +18,9 @@ class MyWindow(QMainWindow, UI_class) :
         self.setupUi(self)
         #self.image = None
         self.size = None
-        self.height_resolution.textChanged.connect(self.change_resolution(self.size))
-        self.width_resolution.textChanged.connect(self.change_resolution(self, self.size))
-        self.resolutionButton.clicked.connect(self.change_resolution)
+        #self.height_resolution.textChanged.connect(self.change_resolution(self.size))
+        #self.width_resolution.textChanged.connect(self.change_resolution(self, self.size))
+        #self.resolutionButton.clicked.connect(self.change_resolution)
 
     def MyVideoCapture(self):
         # Open the video source
@@ -46,7 +46,7 @@ class MyWindow(QMainWindow, UI_class) :
     def __del__(self):
         if self.webcam.isOpened():
             self.webcam.release()    
-
+            
     def change_resolution(self, size):
         pass
     
