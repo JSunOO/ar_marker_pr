@@ -1,64 +1,102 @@
-import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtCore, QtGui, QtWidgets   # ui 파일을 사용하기 위한 모듈 import
 from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
+from PyQt5.QtCore import *  # QTimer
 from PyQt5.QtGui import QPixmap, QImage
 import os
 import sys
 import time
 import cv2
-import threading
-
 
 #UI파일 연결 코드
 UI_class = uic.loadUiType("firstwindow.ui")[0]
 
-
 class MyWindow(QMainWindow, UI_class) :
+    #timeout = pyqtSignal()
     def __init__(self) :
         super().__init__()
         self.setupUi(self)
         #self.image = None
-        #self.size = None
+        self.size = (800, 600)
+        #윈도우 크기 재설정
+        self.resize(self.size[0], self.size[1])
+        #경고창 설정
+        btn_warning = QPushButton('Warning')
+        btn_warning.clicked.connect(self.warning)
+        #해상도 변경 QPushButoon인 resolutionButton에 기능 연결
+        self.resolutionButton.clicked.connect(self.rescale_frame)
+ 
 
-    def Video_to_frame(self):
 
-        cap = cv2.VideoCapture(0) #저장된 영상 가져오기 프레임별로 계속 가져오는 듯
+    def warning(self):
+        QMessageBox.warning(
+            self,
+            'Warning',
+            'This is a warning message.'
+        )         
 
-        ###cap으로 영상의 프레임을 가지고와서 전처리 후 화면에 띄움###
-        while True:
-            self.ret, self.frame = cap.read() #영상의 정보 저장
-            if self.ret:
-                self.rgbImage = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB) #프레임에 색입히기
-                self.convertToQtFormat = QImage(self.rgbImage.data, self.rgbImage.shape[1], self.rgbImage.shape[0],
-                                                QImage.Format_RGB888)
+    def myVideoCapture(self):
+        # Open the video source
+        self.webcam = cv2.VideoCapture(0)
+        ret, frame = self.webcam.read()
+        while(self.webcam.isOpened()):
+            ret, frame = self.webcam.read()
+    
+            # check for successfulness of cap.read()
+            if ret:
 
-                self.pixmap = QPixmap(self.convertToQtFormat)
-                self.p = self.pixmap.scaled(400, 300, QtCore.Qt.IgnoreAspectRatio) #프레임 크기 조정
-
-                self.video_viewer_label.setPixmap(self.p)
-                self.video_viewer_label.update() #프레임 띄우기
-
-                sleep(0.01)  # 영상 1프레임당 0.01초로 이걸로 영상 재생속도 조절하면됨 0.02로하면 0.5배속인거임
+                rescaled_frame=self.rescale_frame(frame, size_w=self.width_size, size_h=self.height_size)
+                self.timer = QTimer(self)
+                self.timer.timeout.connect(self.display_video_stream)
+                self.start(30)
 
             else:
+                break            
+    
+            cv2.imshow('frame',rescaled_frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-
-        cap.release()
+    
+        self.webcam.release()
         cv2.destroyAllWindows()
 
-    # video_to_frame을 쓰레드로 사용
-    #이게 영상 재생 쓰레드 돌리는거 얘를 조작하거나 함수를 생성해서 연속재생 관리해야할듯
-    def video_thread(self):
-        thread = threading.Thread(target=self.Video_to_frame, args=(self,))
-        thread.daemon = True  # 프로그램 종료시 프로세스도 함께 종료 (백그라운드 재생 X)
-        thread.start()
+    def display_video_stream(self):
+    #Read frame from camera and repaint QLabel widget.
+        _, frame = self.webcam.read()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = cv2.flip(frame, 1)
+        image = QImage(frame, frame.shape[1], frame.shape[0], 
+            frame.strides[0], QImage.Format_RGB888)        
+        self.vidLabel.setPixmap(QPixmap.fromImage(image))    
 
 
-    def change_resolution(self, size):
-        pass
-    
+    # Release the video source when the object is destroyed
+    def __del__(self):
+        if self.webcam.isOpened():
+            self.webcam.release()    
+
+    # 프레임의 너비와 높이를 재수정
+    def rescale_frame(frame, size_h, size_w):
+        height = int(frame.shape[0]*0 + size_h)
+        width = int(frame.shape[1]*0 + size_w)
+        dim = (width, height)
+        return cv2.resize(frame, dim, interpolation =cv2.INTER_AREA)
+
+    # 프레임 높이 Qlinedit에 입력한 값을 저장한 num1을 반환
+    def height_size(self):
+
+        num1 = int(self.height_resolution.text())
+
+        return num1
+
+    # 프레임 너비 Qlinedit에 입력한 값을 저장한 num2을 반환
+    def width_size(self):
+
+        num2 = int(self.width_resoluiton.text())
+
+        return num2
+
     def open_marker(self):
         pass
     
