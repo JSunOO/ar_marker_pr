@@ -46,7 +46,7 @@ class MyWindow(QMainWindow, UI_class) :
             # check for successfulness of cap.read()
             if ret:
 
-                rescaled_frame=self.rescale_frame(frame, size_w=self.width_size, size_h=self.height_size)
+                rescaled_frame=self.rescale_frame(self, frame)
                 self.timer = QTimer(self)
                 self.timer.timeout.connect(self.display_video_stream)
                 self.start(30)
@@ -59,7 +59,7 @@ class MyWindow(QMainWindow, UI_class) :
                 break
     
         self.webcam.release()
-        cv2.destroyAllWindows()
+        #cv2.destroyAllWindows()
 
     def display_video_stream(self):
     #Read frame from camera and repaint QLabel widget.
@@ -77,25 +77,13 @@ class MyWindow(QMainWindow, UI_class) :
             self.webcam.release()    
 
     # 프레임의 너비와 높이를 재수정
-    def rescale_frame(frame, size_h, size_w):
+    def rescale_frame(self, frame):
+        size_h = (self.height_resolution.text())
+        size_w = (self.width_resoluiton.text())
         height = int(frame.shape[0]*0 + size_h)
         width = int(frame.shape[1]*0 + size_w)
         dim = (width, height)
         return cv2.resize(frame, dim, interpolation =cv2.INTER_AREA)
-
-    # 프레임 높이 Qlinedit에 입력한 값을 저장한 num1을 반환
-    def height_size(self):
-
-        num1 = int(self.height_resolution.text())
-
-        return num1
-
-    # 프레임 너비 Qlinedit에 입력한 값을 저장한 num2을 반환
-    def width_size(self):
-
-        num2 = int(self.width_resoluiton.text())
-
-        return num2
 
     def open_marker(self):
         pass
