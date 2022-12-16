@@ -10,7 +10,7 @@ import time
 import cv2
 
 #UI파일 연결 코드
-UI_class = uic.loadUiType("firstwindow.ui")[0]
+UI_class = uic.loadUiType("secondwindow.ui")[0]
 
 class MyWindow(QMainWindow, UI_class) :
     #timeout = pyqtSignal()
@@ -71,7 +71,7 @@ class MyWindow(QMainWindow, UI_class) :
         size_h = int(self.height_resolution.text())
         size_w = int(self.width_resolution.text())
         
-        self.size = QSize(size_h, size_w)
+        self.size = QSize(size_w, size_h)
         self.set_cam()  
 
     def open_marker(self):
