@@ -17,37 +17,7 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="1" column="0">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="3" column="3">
-       <widget class="QPushButton" name="resolutionButton">
-        <property name="text">
-         <string>해상도 크기 변환</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3" alignment="Qt::AlignHCenter|Qt::AlignBottom">
-       <widget class="QPushButton" name="pushButton_3">
-        <property name="text">
-         <string>AR 마커 등록</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QOpenGLWidget" name="openGLWidget"/>
-      </item>
-      <item row="2" column="3" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="text">
-         <string>AR 마커 검색</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="width_resolution"/>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLineEdit" name="height_resolution"/>
-      </item>
-      <item row="0" column="1">
+      <item row="0" column="1" rowspan="2">
        <widget class="QLabel" name="vidLabel">
         <property name="enabled">
          <bool>true</bool>
@@ -59,6 +29,36 @@
          <string>TextLabel</string>
         </property>
        </widget>
+      </item>
+      <item row="1" column="3" alignment="Qt::AlignHCenter|Qt::AlignBottom">
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="text">
+         <string>AR 마커 등록</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QPushButton" name="resolutionButton">
+        <property name="text">
+         <string>해상도 크기 변환</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="height_resolution"/>
+      </item>
+      <item row="2" column="3" alignment="Qt::AlignHCenter">
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>AR 마커 검색</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="width_resolution"/>
+      </item>
+      <item row="0" column="3" alignment="Qt::AlignRight">
+       <widget class="QTextEdit" name="ar_img"/>
       </item>
      </layout>
     </item>
