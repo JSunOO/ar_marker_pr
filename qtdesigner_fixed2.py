@@ -8,6 +8,7 @@ import os
 import sys
 import time
 import cv2
+import numpy as np
 
 #UI파일 연결 코드
 UI_class = uic.loadUiType("secondwindow.ui")[0]
@@ -73,14 +74,27 @@ class MyWindow(QMainWindow, UI_class) :
         size_w = int(self.width_resolution.text())
         
         self.size = QSize(size_w, size_h)
-        self.set_cam()  
+        self.set_cam()
+
+    def listToString(str_list):
+        result = ' '.join(str(s) for s in str_list)
+        return result.strip()  
 
     def open_marker(self):
-        file_names = QFileDialog.getOpenFileNames(self)
+        fileName, selectedFilter = QFileDialog.getOpenFileNames(self, 'Open AR Marker', 'D:\\', 'Images (*.png *.jpg *.bmp)')
  
-        for file in file_names[0]:
+        if fileName:
             exist = self.ar_img.toPlainText()
-            self.ar_img.setText(exist + file + '\n')
+            string_file = self.listToString(fileName)
+            self.ar_img.setText(exist + string_file + '\n')
+
+            img_array = np.fromfile(string_file, np.uint8)
+            self.read_image = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+            self.read_image = cv2.cvtColor(self.read_image, cv2.COLOR_BGR2RGB)            
+            self.read_image = QImage(self.read_image, self.read_image.shape[1], self.read_image.shape[0], 
+                self.read_image.strides[0], QImage.Format_RGB888)        
+            self.ui_Label.setPixmap(QPixmap.fromImage(self.read_image).scaled(self.size, 
+            Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation))
     
     def find_marker_in_video(self):
         pass
