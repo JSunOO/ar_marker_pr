@@ -70,25 +70,21 @@ class MyWindow(QMainWindow, UI_class) :
     def rescale_frame(self):
         self.timer.stop()
         
-        size_h = int(self.height_resolution.text())
-        size_w = int(self.width_resolution.text())
+        size_h = int(self.heightBox.currentText())
+        size_w = int(self.widthBox.currentText())
         
         self.size = QSize(size_w, size_h)
         self.set_cam()
 
-    def listToString(str_list):
-        result = ' '.join(str(s) for s in str_list)
-        return result.strip()  
-
     def open_marker(self):
-        fileName, selectedFilter = QFileDialog.getOpenFileNames(self, 'Open AR Marker', 'D:\\', 'Images (*.png *.jpg *.bmp)')
+        fileName, selectedFilter = QFileDialog.getOpenFileName(self, 'Open AR Marker', 'D:\\', 'Images (*.png *.jpg *.bmp)')
  
         if fileName:
             exist = self.ar_img.toPlainText()
-            string_file = self.listToString(fileName)
-            self.ar_img.setText(exist + string_file + '\n')
+            #string_file = self.listToString(fileName)
+            self.ar_img.setText(exist + fileName + '\n')
 
-            img_array = np.fromfile(string_file, np.uint8)
+            img_array = np.fromfile(fileName, np.uint8)
             self.read_image = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
             self.read_image = cv2.cvtColor(self.read_image, cv2.COLOR_BGR2RGB)            
             self.read_image = QImage(self.read_image, self.read_image.shape[1], self.read_image.shape[0], 
