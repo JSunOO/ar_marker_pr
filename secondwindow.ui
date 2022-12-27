@@ -17,16 +17,26 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="1" column="0">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="1" rowspan="2">
-       <widget class="QLabel" name="vidLabel">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
+      <item row="0" column="3" alignment="Qt::AlignRight">
+       <widget class="QTextEdit" name="ar_img"/>
+      </item>
+      <item row="4" column="3">
+       <widget class="QLabel" name="ui_Label">
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>300</height>
+         </size>
         </property>
         <property name="text">
          <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3" alignment="Qt::AlignHCenter">
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>AR 마커 검색</string>
         </property>
        </widget>
       </item>
@@ -44,32 +54,36 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QLineEdit" name="height_resolution"/>
-      </item>
-      <item row="2" column="3" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pushButton_2">
+      <item row="0" column="0" rowspan="2" colspan="2">
+       <widget class="QLabel" name="vidLabel">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
         <property name="text">
-         <string>AR 마커 검색</string>
+         <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="width_resolution"/>
+       <widget class="QComboBox" name="widthBox"/>
       </item>
-      <item row="0" column="3" alignment="Qt::AlignRight">
-       <widget class="QTextEdit" name="ar_img"/>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="heightBox"/>
       </item>
-      <item row="4" column="3">
-       <widget class="QLabel" name="ui_Label">
-        <property name="maximumSize">
-         <size>
-          <width>300</width>
-          <height>300</height>
-         </size>
-        </property>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>TextLabel</string>
+         <string>               너비 값</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>               높이 값</string>
         </property>
        </widget>
       </item>
